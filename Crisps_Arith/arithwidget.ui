@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ArithWidget</class>
+ <widget class="QWidget" name="ArithWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>262</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>ArithWidget</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QPushButton" name="startBtn">
+       <property name="font">
+        <font>
+         <family>Ark Pixel 12px Proportional zh_cn</family>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>开始</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="scoreLabel">
+       <property name="font">
+        <font>
+         <family>Ark Pixel 12px Proportional zh_cn</family>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>你目前有：0分</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="settingsBtn">
+       <property name="font">
+        <font>
+         <family>Ark Pixel 12px Proportional zh_cn</family>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>设置</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="formerLabel">
+       <property name="font">
+        <font>
+         <family>Ark Pixel 12px Proportional zh_cn</family>
+         <pointsize>48</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>??</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="operatorLabel">
+       <property name="font">
+        <font>
+         <family>Ark Pixel 12px Proportional zh_cn</family>
+         <pointsize>48</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>?</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="latterLabel">
+       <property name="font">
+        <font>
+         <family>Ark Pixel 12px Proportional zh_cn</family>
+         <pointsize>48</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>??</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <item>
+      <widget class="QLineEdit" name="answerLineA">
+       <property name="font">
+        <font>
+         <family>Ark Pixel 12px Proportional zh_cn</family>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="divLabel">
+       <property name="font">
+        <font>
+         <family>Ark Pixel 12px Proportional zh_cn</family>
+         <pointsize>16</pointsize>
+         <strikeout>false</strikeout>
+        </font>
+       </property>
+       <property name="text">
+        <string>&lt;s&gt;余&lt;/s&gt;</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="answerLineB">
+       <property name="font">
+        <font>
+         <family>Ark Pixel 12px Proportional zh_cn</family>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>???</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignmentFlag::AlignCenter</set>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="handInBtn">
+       <property name="font">
+        <font>
+         <family>Ark Pixel 12px Proportional zh_cn</family>
+         <pointsize>16</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>提交</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
