@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ArithmeticWidget</class>
+ <widget class="QWidget" name="ArithmeticWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>400</width>
+    <height>300</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="1" column="8" rowspan="2">
+    <widget class="QLabel" name="latterLabel">
+     <property name="text">
+      <string>??</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="5">
+    <widget class="QLineEdit" name="answerLineA">
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="8">
+    <widget class="QLineEdit" name="answerLineB">
+     <property name="text">
+      <string>???</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="7">
+    <widget class="QLabel" name="divLabel">
+     <property name="text">
+      <string>&lt;s&gt;余&lt;/s&gt;</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="7" rowspan="2">
+    <widget class="QLabel" name="operatorLabel">
+     <property name="text">
+      <string>?</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="5" rowspan="2">
+    <widget class="QLabel" name="formerLabel">
+     <property name="text">
+      <string>??</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="5" colspan="4">
+    <widget class="QPushButton" name="handInBtn">
+     <property name="text">
+      <string>提交</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="5" colspan="4">
+    <widget class="QLabel" name="scoreLabel">
+     <property name="text">
+      <string>你目前有：0分</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignmentFlag::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0">
+    <widget class="QCheckBox" name="addCheck">
+     <property name="text">
+      <string>加法</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QCheckBox" name="subCheck">
+     <property name="text">
+      <string>减法</string>
+     </property>
+     <property name="checked">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QCheckBox" name="divCheck">
+     <property name="text">
+      <string>除法</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QCheckBox" name="mulCheck">
+     <property name="text">
+      <string>乘法</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QCheckBox" name="negativeCheck">
+     <property name="text">
+      <string>负数</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QComboBox" name="addBox">
+     <item>
+      <property name="text">
+       <string>20以内</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>200以内</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>2000以内</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>20000以内</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QComboBox" name="subBox">
+     <item>
+      <property name="text">
+       <string>20以内</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>200以内</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>2000以内</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>20000以内</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QComboBox" name="mulBox">
+     <item>
+      <property name="text">
+       <string>20以内</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>200以内</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>2000以内</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>20000以内</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QComboBox" name="divBox">
+     <item>
+      <property name="text">
+       <string>20以内</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>200以内</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>2000以内</string>
+      </property>
+     </item>
+     <item>
+      <property name="text">
+       <string>20000以内</string>
+      </property>
+     </item>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QPushButton" name="startBtn">
+     <property name="text">
+      <string>开始</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

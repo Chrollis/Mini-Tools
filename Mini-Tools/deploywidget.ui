@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DeployWidget</class>
+ <widget class="QWidget" name="DeployWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>500</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>500</width>
+    <height>300</height>
+   </size>
+  </property>
+  <property name="windowTitle">
+   <string>Widget</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="2" column="3">
+    <widget class="QPushButton" name="deployButton">
+     <property name="text">
+      <string>浏览...</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="3">
+    <widget class="QPushButton" name="browseExeButton">
+     <property name="text">
+      <string>浏览…</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2" rowspan="5" colspan="2">
+    <widget class="QPlainTextEdit" name="logTextEdit"/>
+   </item>
+   <item row="0" column="1" colspan="2">
+    <widget class="QLineEdit" name="exePathEdit">
+     <property name="inputMask">
+      <string/>
+     </property>
+     <property name="placeholderText">
+      <string>请选择目标文件</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1" colspan="2">
+    <widget class="QLineEdit" name="outputDirEdit">
+     <property name="placeholderText">
+      <string>请选择输出目录</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="3">
+    <widget class="QPushButton" name="browseOutputButton">
+     <property name="text">
+      <string>浏览...</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1" colspan="2">
+    <widget class="QLineEdit" name="statusLabel">
+     <property name="inputMask">
+      <string/>
+     </property>
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+     <property name="placeholderText">
+      <string>请选择windeployqt程序</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="1">
+    <widget class="QCheckBox" name="compilerRuntimeCheck">
+     <property name="text">
+      <string>包含编译器运行时</string>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="1">
+    <widget class="QCheckBox" name="noTranslationsCheck">
+     <property name="text">
+      <string>不包含翻译文件</string>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="1">
+    <widget class="QCheckBox" name="noSystemD3DCheck">
+     <property name="text">
+      <string>不包含系统D3D编译器</string>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="1">
+    <widget class="QCheckBox" name="noOpenglSwCheck">
+     <property name="text">
+      <string>不包含OpenGL软件实现</string>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="1">
+    <widget class="QCheckBox" name="verboseCheck">
+     <property name="text">
+      <string>显示详细输出</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

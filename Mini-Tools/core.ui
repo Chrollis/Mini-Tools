@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Core</class>
+ <widget class="QMainWindow" name="Core">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QTabWidget" name="tabWidget"/>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu_T">
+    <property name="title">
+     <string>工具(&amp;T)</string>
+    </property>
+    <addaction name="actionDeploy"/>
+    <addaction name="actionChat"/>
+    <addaction name="actionArithmetic"/>
+   </widget>
+   <widget class="QMenu" name="menu_W">
+    <property name="title">
+     <string>窗口(&amp;W)</string>
+    </property>
+    <addaction name="actionDock"/>
+   </widget>
+   <addaction name="menu_T"/>
+   <addaction name="menu_W"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionDeploy">
+   <property name="text">
+    <string>Qt-dlls部署</string>
+   </property>
+  </action>
+  <action name="actionChat">
+   <property name="text">
+    <string>AI对话整理</string>
+   </property>
+   <property name="toolTip">
+    <string>AI对话整理</string>
+   </property>
+  </action>
+  <action name="actionDock">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>侧窗化当前窗口</string>
+   </property>
+  </action>
+  <action name="actionArithmetic">
+   <property name="text">
+    <string>简单口算生成</string>
+   </property>
+  </action>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
