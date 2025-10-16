@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.19)
 project(Mini-Tools LANGUAGES CXX)
 
-find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets)
+find_package(Qt6 6.5 REQUIRED COMPONENTS Core Widgets Multimedia)
 
 qt_standard_project_setup()
 
@@ -13,12 +13,14 @@ qt_add_executable(Mini-Tools
     chatformatwidget.h chatformatwidget.cpp chatformatwidget.ui
     resource.rc
     arithmeticwidget.h arithmeticwidget.cpp arithmeticwidget.ui
+    tictactoewidget.h tictactoewidget.cpp tictactoewidget.ui
 )
 
 target_link_libraries(Mini-Tools
     PRIVATE
         Qt::Core
         Qt::Widgets
+        Qt::Multimedia
 )
 
 include(GNUInstallDirs)

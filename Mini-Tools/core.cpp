@@ -2,6 +2,7 @@
 #include "arithmeticwidget.h"
 #include "chatformatwidget.h"
 #include "deploywidget.h"
+#include "tictactoewidget.h"
 #include "ui_core.h"
 
 #define onActionTriggered(widgetClassName, actionName, actionTitle) \
@@ -27,6 +28,7 @@ Core::Core(QWidget* parent)
     connect(ui->actionDeploy, &QAction::triggered, this, [&]() { onActionTriggered(DeployWidget, actionDeploy, "Qt-dlls部署"); });
     connect(ui->actionChat, &QAction::triggered, this, [&]() { onActionTriggered(ChatFormatWidget, actionChat, "AI对话整理"); });
     connect(ui->actionArithmetic, &QAction::triggered, this, [&]() { onActionTriggered(ArithmeticWidget, actionArithmetic, "简单口算生成"); });
+    connect(ui->actionTictactoe, &QAction::triggered, this, [&]() { onActionTriggered(TictactoeWidget, actionTictactoe, "井字棋"); });
     connect(ui->actionDock, &QAction::triggered, this, &Core::onActionDockTriggered);
 }
 

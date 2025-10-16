@@ -43,7 +43,14 @@
     </property>
     <addaction name="actionDock"/>
    </widget>
+   <widget class="QMenu" name="menu_G">
+    <property name="title">
+     <string>游戏(&amp;G)</string>
+    </property>
+    <addaction name="actionTictactoe"/>
+   </widget>
    <addaction name="menu_T"/>
+   <addaction name="menu_G"/>
    <addaction name="menu_W"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -71,6 +78,11 @@
   <action name="actionArithmetic">
    <property name="text">
     <string>简单口算生成</string>
+   </property>
+  </action>
+  <action name="actionTictactoe">
+   <property name="text">
+    <string>井字棋</string>
    </property>
   </action>
  </widget>
