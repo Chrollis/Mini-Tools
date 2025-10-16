@@ -14,6 +14,7 @@ qt_add_executable(Mini-Tools
     resource.rc
     arithmeticwidget.h arithmeticwidget.cpp arithmeticwidget.ui
     tictactoewidget.h tictactoewidget.cpp tictactoewidget.ui
+    blackjackwidget.h blackjackwidget.cpp blackjackwidget.ui
 )
 
 target_link_libraries(Mini-Tools

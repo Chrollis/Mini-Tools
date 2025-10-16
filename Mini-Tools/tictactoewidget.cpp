@@ -85,20 +85,9 @@ void TictactoeWidget::play()
 
 void TictactoeWidget::over(Piece whom)
 {
-    addSound("./Content/win.wav");
-    QString str;
-    switch (whom) {
-    case Offensive:
-        str = "先手获胜";
-        break;
-    case Nothing:
-        str = "平局";
-        break;
-    case Defensive:
-        str = "后手获胜";
-        break;
-    }
-    QMessageBox::information(this, "结束", str);
+    addSound("./Content/Tictactoe/win.wav");
+    const QString overs[3] = { "先手获胜！", "平局！", "后手获胜！" };
+    QMessageBox::information(this, "结束", overs[whom]);
     onRestartBtnClicked();
 }
 
@@ -149,13 +138,13 @@ void TictactoeWidget::mousePressEvent(QMouseEvent* event)
                 if (who == Offensive) {
                     cells[i] = Offensive;
                     who = Defensive;
-                    addSound("./Content/move.wav");
+                    addSound("./Content/Tictactoe/move.wav");
                     play();
                     update();
                 } else if (who == Defensive) {
                     cells[i] = Defensive;
                     who = Offensive;
-                    addSound("./Content/move.wav");
+                    addSound("./Content/Tictactoe/move.wav");
                     play();
                     update();
                 }

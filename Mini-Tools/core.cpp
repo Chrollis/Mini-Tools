@@ -1,5 +1,6 @@
 #include "core.h"
 #include "arithmeticwidget.h"
+#include "blackjackwidget.h"
 #include "chatformatwidget.h"
 #include "deploywidget.h"
 #include "tictactoewidget.h"
@@ -29,6 +30,7 @@ Core::Core(QWidget* parent)
     connect(ui->actionChat, &QAction::triggered, this, [&]() { onActionTriggered(ChatFormatWidget, actionChat, "AI对话整理"); });
     connect(ui->actionArithmetic, &QAction::triggered, this, [&]() { onActionTriggered(ArithmeticWidget, actionArithmetic, "简单口算生成"); });
     connect(ui->actionTictactoe, &QAction::triggered, this, [&]() { onActionTriggered(TictactoeWidget, actionTictactoe, "井字棋"); });
+    connect(ui->actionBlackjack, &QAction::triggered, this, [&]() { onActionTriggered(BlackjackWidget, actionBlackjack, "21点"); });
     connect(ui->actionDock, &QAction::triggered, this, &Core::onActionDockTriggered);
 }
 

@@ -48,6 +48,7 @@
      <string>游戏(&amp;G)</string>
     </property>
     <addaction name="actionTictactoe"/>
+    <addaction name="actionBlackjack"/>
    </widget>
    <addaction name="menu_T"/>
    <addaction name="menu_G"/>
@@ -83,6 +84,11 @@
   <action name="actionTictactoe">
    <property name="text">
     <string>井字棋</string>
+   </property>
+  </action>
+  <action name="actionBlackjack">
+   <property name="text">
+    <string>21点</string>
    </property>
   </action>
  </widget>
