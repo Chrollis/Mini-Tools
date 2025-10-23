@@ -15,6 +15,9 @@ qt_add_executable(Mini-Tools
     arithmeticwidget.h arithmeticwidget.cpp arithmeticwidget.ui
     tictactoewidget.h tictactoewidget.cpp tictactoewidget.ui
     blackjackwidget.h blackjackwidget.cpp blackjackwidget.ui
+    breakoutwidget.h breakoutwidget.cpp breakoutwidget.ui
+    cprlib.h
+    cprlib.cpp
 )
 
 target_link_libraries(Mini-Tools

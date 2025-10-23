@@ -1,7 +1,9 @@
 #include "core.h"
 #include "arithmeticwidget.h"
 #include "blackjackwidget.h"
+#include "breakoutwidget.h"
 #include "chatformatwidget.h"
+#include "cprlib.h"
 #include "deploywidget.h"
 #include "tictactoewidget.h"
 #include "ui_core.h"
@@ -25,12 +27,14 @@ Core::Core(QWidget* parent)
 {
     ui->setupUi(this);
     setWindowTitle("小工具些");
+    startTimer(3000);
 
     connect(ui->actionDeploy, &QAction::triggered, this, [&]() { onActionTriggered(DeployWidget, actionDeploy, "Qt-dlls部署"); });
     connect(ui->actionChat, &QAction::triggered, this, [&]() { onActionTriggered(ChatFormatWidget, actionChat, "AI对话整理"); });
     connect(ui->actionArithmetic, &QAction::triggered, this, [&]() { onActionTriggered(ArithmeticWidget, actionArithmetic, "简单口算生成"); });
     connect(ui->actionTictactoe, &QAction::triggered, this, [&]() { onActionTriggered(TictactoeWidget, actionTictactoe, "井字棋"); });
     connect(ui->actionBlackjack, &QAction::triggered, this, [&]() { onActionTriggered(BlackjackWidget, actionBlackjack, "21点"); });
+    connect(ui->actionBreakout, &QAction::triggered, this, [&]() { onActionTriggered(BreakoutWidget, actionBreakout, "打砖块"); });
     connect(ui->actionDock, &QAction::triggered, this, &Core::onActionDockTriggered);
 }
 
@@ -71,4 +75,9 @@ void Core::onActionDockTriggered()
             ui->actionDock->setEnabled(false);
         }
     }
+}
+
+void Core::timerEvent(QTimerEvent*)
+{
+    sweepSound();
 }

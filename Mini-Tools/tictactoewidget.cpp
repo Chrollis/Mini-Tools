@@ -1,4 +1,5 @@
 #include "tictactoewidget.h"
+#include "cprlib.h"
 #include "ui_tictactoewidget.h"
 #include <QMessageBox>
 #include <QMouseEvent>
@@ -19,9 +20,6 @@ TictactoeWidget::TictactoeWidget(QWidget* parent)
 
 TictactoeWidget::~TictactoeWidget()
 {
-    for (auto& sound : sounds) {
-        delete sound;
-    }
     delete[] cells;
     delete ui;
 }
@@ -85,7 +83,7 @@ void TictactoeWidget::play()
 
 void TictactoeWidget::over(Piece whom)
 {
-    addSound("./Content/Tictactoe/win.wav");
+    addSound("Tictactoe/win.wav");
     const QString overs[3] = { "先手获胜！", "平局！", "后手获胜！" };
     QMessageBox::information(this, "结束", overs[whom]);
     onRestartBtnClicked();
@@ -97,18 +95,16 @@ void TictactoeWidget::paintEvent(QPaintEvent*)
     QPixmap pic(size, size);
     pic.fill();
     QPainter painter(&pic);
-    QPen pen;
-    pen.setWidth(1);
     painter.scale(size * 0.01, size * 0.01);
     painter.setRenderHint(QPainter::Antialiasing);
-    pen.setColor(Qt::lightGray);
-    painter.setPen(pen);
-    painter.drawLine(34, 0, 34, 100);
-    painter.drawLine(68, 0, 68, 100);
-    painter.drawLine(0, 34, 100, 34);
-    painter.drawLine(0, 68, 100, 68);
-    pen.setColor(Qt::black);
-    painter.setPen(pen);
+    painter.setBrush(Qt::lightGray);
+    painter.setPen(Qt::NoPen);
+    painter.drawRect(32, 0, 2, 100);
+    painter.drawRect(66, 0, 2, 100);
+    painter.drawRect(0, 32, 100, 2);
+    painter.drawRect(0, 66, 100, 2);
+    painter.setBrush(Qt::NoBrush);
+    painter.setPen(QPen(Qt::black, 1));
     int x, y;
     for (int i = 0; i < 9; i++) {
         x = i % 3;
@@ -126,35 +122,27 @@ void TictactoeWidget::paintEvent(QPaintEvent*)
 
 void TictactoeWidget::mousePressEvent(QMouseEvent* event)
 {
-    int size = qMin(ui->chessBoard->width(), ui->chessBoard->height()) - 20;
-    double scale = size * 0.01;
-    QPoint delta = { (ui->chessBoard->width() - size) / 2, (ui->chessBoard->height() - size) / 2 };
-    QRect rect(ui->chessBoard->pos() + delta, QSize(size, size));
-    if (rect.contains(event->pos())) {
-        if (event->button() == Qt::LeftButton) {
+    if (event->button() == Qt::LeftButton) {
+        int size = qMin(ui->chessBoard->width(), ui->chessBoard->height()) - 20;
+        double scale = size * 0.01;
+        QPoint delta = { (ui->chessBoard->width() - size) / 2, (ui->chessBoard->height() - size) / 2 };
+        QRect rect(ui->chessBoard->pos() + delta, QSize(size, size));
+        if (rect.contains(event->pos())) {
             QPoint pos = event->pos() - rect.topLeft();
             int i = pos.x() / int(34 * scale) + pos.y() / int(34 * scale) * 3;
             if (i >= 0 && i < 9 && cells[i] == Nothing) {
                 if (who == Offensive) {
                     cells[i] = Offensive;
                     who = Defensive;
-                    addSound("./Content/Tictactoe/move.wav");
+                    addSound("Tictactoe/move.wav");
                     play();
                     update();
                 } else if (who == Defensive) {
                     cells[i] = Defensive;
                     who = Offensive;
-                    addSound("./Content/Tictactoe/move.wav");
+                    addSound("Tictactoe/move.wav");
                     play();
                     update();
-                }
-                for (auto it = sounds.begin(); it != sounds.end();) {
-                    if (!(*it)->isPlaying()) {
-                        delete *it;
-                        it = sounds.erase(it);
-                    } else {
-                        it++;
-                    }
                 }
             }
         }
@@ -168,14 +156,4 @@ void TictactoeWidget::onRestartBtnClicked()
     }
     who = Offensive;
     update();
-}
-
-void TictactoeWidget::addSound(QString path)
-{
-    QSoundEffect* sound = new QSoundEffect;
-    sound->setSource(QUrl::fromLocalFile(path));
-    sound->setLoopCount(1);
-    sound->setVolume(1.0);
-    sound->play();
-    sounds.prepend(sound);
 }

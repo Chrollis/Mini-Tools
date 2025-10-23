@@ -1,4 +1,5 @@
 #include "blackjackwidget.h"
+#include "cprlib.h"
 #include "ui_blackjackwidget.h"
 #include <QMessageBox>
 #include <QPainter>
@@ -14,7 +15,7 @@ BlackjackWidget::BlackjackWidget(QWidget* parent)
             poker.push_back(Card(i, j));
         }
     }
-    cardBg.load("./Content/Blackjack/Background.gif");
+    cardBg.load(getContent("Blackjack/Background.gif"));
     hit(false);
     hit(false);
     connect(ui->newBtn, &QPushButton::clicked, this, &BlackjackWidget::onNewBtnClicked);
@@ -112,7 +113,12 @@ void BlackjackWidget::onStandBtnClicked()
 
 void BlackjackWidget::paintEvent(QPaintEvent*)
 {
-    int width = ui->labelRobot->width() / 5 - 5;
+    int i = 0;
+    int width;
+    do {
+        width = ui->labelRobot->width() / ++i - 5;
+    } while (width > 100);
+    i *= 2;
     int height = width * 1.34;
     QPoint basePos = ui->labelRobot->pos() + ui->labelRobot->rect().bottomLeft();
     QPainter painter(this);
@@ -120,10 +126,10 @@ void BlackjackWidget::paintEvent(QPaintEvent*)
     int index = 0;
     for (const Card* const card : std::as_const(robot)) {
         if (!standed && index <= 1) {
-            painter.drawImage(basePos + QPoint((index % 5) * (width + 5), (index / 5) * (height + 5) + 5),
+            painter.drawImage(basePos + QPoint((index % i) * (width / 2 + 5), (index / i) * (height + 5) + 5),
                 cardBg.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation));
         } else {
-            painter.drawImage(basePos + QPoint((index % 5) * (width + 5), (index / 5) * (height + 5) + 5),
+            painter.drawImage(basePos + QPoint((index % i) * (width / 2 + 5), (index / i) * (height + 5) + 5),
                 card->img.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation));
         }
         index += 1;
@@ -131,7 +137,7 @@ void BlackjackWidget::paintEvent(QPaintEvent*)
     basePos = ui->labelPlayer->pos() + ui->labelPlayer->rect().bottomLeft();
     index = 0;
     for (const Card* const card : std::as_const(human)) {
-        painter.drawImage(basePos + QPoint((index % 5) * (width + 5), (index / 5) * (height + 5) + 5),
+        painter.drawImage(basePos + QPoint((index % i) * (width / 2 + 5), (index / i) * (height + 5) + 5),
             card->img.scaled(width, height, Qt::KeepAspectRatio, Qt::SmoothTransformation));
         index += 1;
     }
@@ -144,5 +150,5 @@ BlackjackWidget::Card::Card(int suit, int rank)
     const QString rands[13] = { "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K" };
     this->suit = suit;
     this->rank = rank;
-    img.load("./Content/Blackjack/" + suits[suit] + rands[rank - 1] + ".gif");
+    img.load(getContent("Blackjack/" + suits[suit] + rands[rank - 1] + ".gif"));
 }

@@ -1,4 +1,5 @@
 #include "chatformatwidget.h"
+#include "cprlib.h"
 #include "ui_chatformatwidget.h"
 #include <QDateTime>
 #include <QFile>
@@ -217,7 +218,7 @@ void ChatFormatWidget::loadDefaultSeparators()
 
 void ChatFormatWidget::saveSettings()
 {
-    QSettings settings("./config.ini", QSettings::IniFormat);
+    QSettings settings(getContent("config.ini"), QSettings::IniFormat);
     settings.setValue("chatFormat/myName", myName);
     settings.setValue("chatFormat/aiName", aiName);
     settings.setValue("chatFormat/blockSeparator", blockSeparator == "\n\n" ? "" : blockSeparator);
@@ -226,7 +227,7 @@ void ChatFormatWidget::saveSettings()
 
 void ChatFormatWidget::loadSettings()
 {
-    QSettings settings("./config.ini", QSettings::IniFormat);
+    QSettings settings(getContent("config.ini"), QSettings::IniFormat);
     QString tempSeparator;
     myName = settings.value("chatFormat/myName", "").toString();
     ui->myNameEdit->setText(myName);

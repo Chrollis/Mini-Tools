@@ -1,4 +1,5 @@
 #include "deploywidget.h"
+#include "cprlib.h"
 #include "ui_deploywidget.h"
 #include <QLibraryInfo>
 #include <QStandardPaths>
@@ -129,7 +130,7 @@ void DeployWidget::findWindeployqt()
 
 void DeployWidget::saveSettings()
 {
-    QSettings settings("./config.ini", QSettings::IniFormat);
+    QSettings settings(getContent("config.ini"), QSettings::IniFormat);
     settings.setValue("deploy/exePath", ui->exePathEdit->text());
     settings.setValue("deploy/outputDir", ui->outputDirEdit->text());
     settings.setValue("deploy/windeplpyPath", this->windeployqtPath);
@@ -142,7 +143,7 @@ void DeployWidget::saveSettings()
 
 void DeployWidget::loadSettings()
 {
-    QSettings settings("./config.ini", QSettings::IniFormat);
+    QSettings settings(getContent("config.ini"), QSettings::IniFormat);
     ui->exePathEdit->setText(settings.value("deploy/exePath").toString());
     ui->outputDirEdit->setText(settings.value("deploy/outputDir").toString());
     this->windeployqtPath = settings.value("deploy/windeplpyPath").toString();

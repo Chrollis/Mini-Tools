@@ -21,6 +21,7 @@ private:
     QMap<QWidget*, QDockWidget*> docks;
     void widgetClose(QWidget* widget);
     void onActionDockTriggered();
+    void timerEvent(QTimerEvent*);
 };
 
 #endif // CORE_H

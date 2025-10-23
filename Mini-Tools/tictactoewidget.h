@@ -1,7 +1,6 @@
 #ifndef TICTACTOEWIDGET_H
 #define TICTACTOEWIDGET_H
 
-#include <QSoundEffect>
 #include <QWidget>
 
 namespace Ui {
@@ -28,13 +27,11 @@ private:
 
 private:
     Ui::TictactoeWidget* ui;
-    QList<QSoundEffect*> sounds;
     Piece* cells;
     Piece who = Offensive;
     void paintEvent(QPaintEvent*);
     void mousePressEvent(QMouseEvent* event);
     void onRestartBtnClicked();
-    void addSound(QString path);
 };
 
 #endif // TICTACTOEWIDGET_H

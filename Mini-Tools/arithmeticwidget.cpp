@@ -1,4 +1,5 @@
 #include "arithmeticwidget.h"
+#include "cprlib.h"
 #include "ui_arithmeticwidget.h"
 #include <QMessageBox>
 #include <QSettings>
@@ -190,7 +191,7 @@ bool ArithmeticWidget::isOperandsLegal(int a, int b)
 
 void ArithmeticWidget::saveSettings()
 {
-    QSettings settings("./config.ini", QSettings::IniFormat);
+    QSettings settings(getContent("config.ini"), QSettings::IniFormat);
     settings.setValue("arithmetic/score", score);
     settings.setValue("arithmetic/negative", ui->negativeCheck->isChecked());
     for (int i = 0; i < 4; i++) {
@@ -201,7 +202,7 @@ void ArithmeticWidget::saveSettings()
 
 void ArithmeticWidget::loadSettings()
 {
-    QSettings settings("./config.ini", QSettings::IniFormat);
+    QSettings settings(getContent("config.ini"), QSettings::IniFormat);
     score = settings.value("arithmetic/score").toInt();
     ui->negativeCheck->setChecked(settings.value("arithmetic/negative").toBool());
     ui->scoreLabel->setText("你目前有：" + QString::number(score) + "分");
