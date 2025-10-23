@@ -5,7 +5,7 @@ QString getContent(const QString& suffix)
 #ifdef QT_DEBUG
     return "C:/Users/Chrollis/Desktop/Content/" + suffix;
 #else
-    return "./" + suffix;
+    return "./Content/" + suffix;
 #endif
 }
 
