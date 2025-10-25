@@ -33,6 +33,7 @@ private:
         enum Type {
             Clone,
             Split,
+            Add
         } type;
     };
 

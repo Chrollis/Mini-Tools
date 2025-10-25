@@ -108,6 +108,9 @@ void BreakoutWidget::paintEvent(QPaintEvent*)
         case Fruit::Split:
             painter.setBrush(Qt::yellow);
             break;
+        case Fruit::Add:
+            painter.setBrush(Qt::magenta);
+            break;
         }
         painter.drawEllipse(fruit->pos, 2, 2);
     }
@@ -173,6 +176,10 @@ void BreakoutWidget::timerEvent(QTimerEvent*)
                         }
                     }
                     balls.append(newBalls);
+                    break;
+                case Fruit::Add:
+                    lives++;
+                    ui->ballLbl->setText(QString("备用球：%1个").arg(lives));
                     break;
                 }
                 delete fruit;
@@ -260,7 +267,7 @@ void BreakoutWidget::timerEvent(QTimerEvent*)
                             if (rand() % 100 > 95) {
                                 Fruit* fruit = new Fruit;
                                 fruit->pos = brickRect.center();
-                                fruit->type = (Fruit::Type)(rand() % 2);
+                                fruit->type = (Fruit::Type)(rand() % 3);
                                 fruits.append(fruit);
                             }
                         }
