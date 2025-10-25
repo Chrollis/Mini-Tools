@@ -34,7 +34,7 @@ private:
     QList<Card*> robot;
     QImage cardBg;
     int currPos = 0;
-    bool standed = false;
+    bool standed = 0;
 
 private:
     void hit(bool isHuman);

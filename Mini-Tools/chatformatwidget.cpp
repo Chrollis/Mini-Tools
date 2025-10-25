@@ -77,7 +77,7 @@ void ChatFormatWidget::onFormatButtonClicked()
         QMessageBox::critical(this, "文件错误", "选择的文件不存在！");
         return;
     }
-    ui->formatButton->setEnabled(false);
+    ui->formatButton->setEnabled(0);
     logMessage("开始处理对话文件...");
     logMessage("您的名字：" + myName);
     logMessage("AI的名字：" + aiName);

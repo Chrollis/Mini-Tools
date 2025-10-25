@@ -8,7 +8,7 @@
 QString getContent(const QString& suffix);
 
 extern QList<QSoundEffect*> soundList;
-void addSound(const QString& path, bool hasPrefix = false);
+void addSound(const QString& path, bool hasPrefix = 0);
 void sweepSound();
 
 #endif // CPRLIB_H

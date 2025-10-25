@@ -16,8 +16,8 @@ BlackjackWidget::BlackjackWidget(QWidget* parent)
         }
     }
     cardBg.load(getContent("Blackjack/Background.gif"));
-    hit(false);
-    hit(false);
+    hit(0);
+    hit(0);
     connect(ui->newBtn, &QPushButton::clicked, this, &BlackjackWidget::onNewBtnClicked);
     connect(ui->hitBtn, &QPushButton::clicked, this, [&]() { hit(true); });
     connect(ui->standBtn, &QPushButton::clicked, this, &BlackjackWidget::onStandBtnClicked);
@@ -64,11 +64,11 @@ int BlackjackWidget::score(bool isHuman)
 
 int BlackjackWidget::stand()
 {
-    while (score(false) < 17) {
-        hit(false);
+    while (score(0) < 17) {
+        hit(0);
     }
     int humanScore = score(true);
-    int computerScore = score(false);
+    int computerScore = score(0);
     if ((humanScore > 21 && computerScore > 21) || (humanScore == computerScore)) {
         return 0;
     }
@@ -91,10 +91,10 @@ void BlackjackWidget::onNewBtnClicked()
             poker.push_back(Card(i, j));
         }
     }
-    standed = false;
+    standed = 0;
     ui->labelRobot->setText("庄家的牌：");
-    hit(false);
-    hit(false);
+    hit(0);
+    hit(0);
     for (int i = 0; i < 500; i++) {
         std::swap(poker[rand() % 52], poker[rand() % 52]);
     }
@@ -103,7 +103,7 @@ void BlackjackWidget::onNewBtnClicked()
 void BlackjackWidget::onStandBtnClicked()
 {
     int over = stand();
-    ui->labelRobot->setText("庄家的牌：" + QString::number(score(false)) + "分");
+    ui->labelRobot->setText("庄家的牌：" + QString::number(score(0)) + "分");
     standed = true;
     update();
     const QString overs[3] = { "平局！", "你赢了！", "你输了！" };

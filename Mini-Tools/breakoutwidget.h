@@ -49,13 +49,12 @@ private:
     QList<Fruit*> fruits;
     int score = 0;
     int lives = 3;
-    bool playing = false;
+    bool playing = 0;
 
 private:
     void init();
     void onStartBtnClicked();
-    void onLeftBtnPressed();
-    void onRightBtnPressed();
+    void onBackBtnClicked();
     void mousePressEvent(QMouseEvent* event);
     void paintEvent(QPaintEvent*);
     void timerEvent(QTimerEvent*);

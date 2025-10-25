@@ -12,13 +12,15 @@ BreakoutWidget::BreakoutWidget(QWidget* parent)
     setWindowTitle("打砖块");
     startTimer(1000 / 30);
     init();
-    ui->rightBtn->setEnabled(false);
-    ui->leftBtn->setEnabled(false);
+    ui->backBtn->setEnabled(0);
+    ui->rightBtn->setEnabled(0);
+    ui->leftBtn->setEnabled(0);
     connect(ui->startBtn, &QPushButton::clicked, this, &BreakoutWidget::onStartBtnClicked);
+    connect(ui->backBtn, &QPushButton::clicked, this, &BreakoutWidget::onBackBtnClicked);
     connect(ui->leftBtn, &QPushButton::pressed, this, [&]() {paddle.isLeft=true;paddle.speedUp=true; });
-    connect(ui->rightBtn, &QPushButton::pressed, this, [&]() {paddle.isLeft=false;paddle.speedUp=true; });
-    connect(ui->leftBtn, &QPushButton::released, this, [&]() { paddle.speedUp = false; });
-    connect(ui->rightBtn, &QPushButton::released, this, [&]() { paddle.speedUp = false; });
+    connect(ui->rightBtn, &QPushButton::pressed, this, [&]() {paddle.isLeft=0;paddle.speedUp=true; });
+    connect(ui->leftBtn, &QPushButton::released, this, [&]() { paddle.speedUp = 0; });
+    connect(ui->rightBtn, &QPushButton::released, this, [&]() { paddle.speedUp = 0; });
 }
 
 BreakoutWidget::~BreakoutWidget()
@@ -31,8 +33,9 @@ void BreakoutWidget::init()
     paddle.pos = QRectF(150, 375, 100, 5);
     paddle.tar = 200;
     paddle.speed = 0;
-    paddle.speedUp = false;
+    paddle.speedUp = 0;
     paddle.isLeft = true;
+    fruits.clear();
     balls.clear();
     Ball* ball = new Ball;
     ball->pos = QPointF(200, 350);
@@ -56,13 +59,26 @@ void BreakoutWidget::onStartBtnClicked()
     if (!playing) {
         playing = true;
         ui->startBtn->setText("暂停");
+        ui->backBtn->setEnabled(true);
         ui->rightBtn->setEnabled(true);
         ui->leftBtn->setEnabled(true);
     } else {
-        playing = false;
+        playing = 0;
         ui->startBtn->setText("继续");
-        ui->rightBtn->setEnabled(false);
-        ui->leftBtn->setEnabled(false);
+        ui->backBtn->setEnabled(0);
+        ui->rightBtn->setEnabled(0);
+        ui->leftBtn->setEnabled(0);
+    }
+}
+
+void BreakoutWidget::onBackBtnClicked()
+{
+    if (lives-- > 0) {
+        Ball* ball = new Ball;
+        ball->pos = QPointF(200, 350);
+        ball->speed = QPointF(0, -3);
+        balls.append(ball);
+        ui->ballLbl->setText(QString("备用球：%1个").arg(lives));
     }
 }
 
@@ -120,6 +136,7 @@ void BreakoutWidget::paintEvent(QPaintEvent*)
 void BreakoutWidget::timerEvent(QTimerEvent*)
 {
     if (playing) {
+        bool flag[3] = { 0, 0, 0 };
         if (paddle.tar < paddle.pos.left()) {
             paddle.pos.moveLeft(qMax(paddle.pos.left() - (paddle.pos.left() - paddle.tar) / 2, 0.1));
         } else if (paddle.tar > paddle.pos.right()) {
@@ -206,16 +223,17 @@ void BreakoutWidget::timerEvent(QTimerEvent*)
                         balls.append(ball);
                         ui->ballLbl->setText(QString("备用球：%1个").arg(lives));
                     } else {
-                        QMessageBox::information(this, "结束", "你输了！总计" + ui->scoreLbl->text());
+                        QMessageBox::information(this, "结束", "失败了！总计" + ui->scoreLbl->text());
                         score = 0;
                         ui->scoreLbl->setText(QString("得分：%1").arg(score));
                         ui->ballLbl->setText(QString("备用球：%1个").arg(lives));
                         lives = 3;
                         init();
                         ui->startBtn->setText("开始");
-                        ui->rightBtn->setEnabled(false);
-                        ui->leftBtn->setEnabled(false);
-                        playing = false;
+                        ui->backBtn->setEnabled(0);
+                        ui->rightBtn->setEnabled(0);
+                        ui->leftBtn->setEnabled(0);
+                        playing = 0;
                         return;
                     }
                 }
@@ -224,24 +242,24 @@ void BreakoutWidget::timerEvent(QTimerEvent*)
                 if (ball->pos.x() - 2 < 0) {
                     ball->pos.rx() = 2;
                     ball->speed.rx() *= -1;
-                    addSound("Breakout/hit.wav");
+                    flag[0] = 1;
                 }
                 if (ball->pos.y() - 2 < 0) {
                     ball->pos.ry() = 2;
                     ball->speed.ry() *= -1;
-                    addSound("Breakout/hit.wav");
+                    flag[0] = 1;
                 }
                 if (ball->pos.x() + 2 >= 400) {
                     ball->pos.rx() = 398;
                     ball->speed.rx() *= -1;
-                    addSound("Breakout/hit.wav");
+                    flag[0] = 1;
                 }
                 QRectF ballRect(ball->pos.x() - 2, ball->pos.y() - 2, 4, 4);
                 if (paddle.pos.intersects(ballRect)) {
                     double hitPos = (ball->pos.x() - paddle.pos.x()) / paddle.pos.x();
                     ball->speed.rx() = 10 * (hitPos - 0.5);
                     ball->speed.ry() *= -1;
-                    addSound("Breakout/paddle.wav");
+                    flag[1] = 1;
                 }
                 for (auto at = bricks.begin(); at != bricks.end();) {
                     Brick* brick = *at;
@@ -251,10 +269,10 @@ void BreakoutWidget::timerEvent(QTimerEvent*)
                         at = bricks.erase(at);
                     } else {
                         if (brickRect.intersects(ballRect)) {
-                            brick->alive = false;
+                            brick->alive = 0;
                             score += brick->score;
                             ui->scoreLbl->setText(QString("得分：%1").arg(score));
-                            addSound("Breakout/brick.wav");
+                            flag[2] = 1;
                             if (ballRect.right() > brickRect.left() && ballRect.left() < brickRect.left() && ball->speed.x() > 0) {
                                 ball->speed.rx() *= -1;
                             } else if (ballRect.left() < brickRect.right() && ballRect.right() > brickRect.right() && ball->speed.x() < 0) {
@@ -274,23 +292,37 @@ void BreakoutWidget::timerEvent(QTimerEvent*)
                         at++;
                     }
                 }
-                if (ball->speed.x() > 4) {
-                    ball->speed.rx() -= (ball->speed.x() - 4) / 2;
-                }
-                if (ball->speed.y() > 4) {
-                    ball->speed.ry() -= (ball->speed.y() - 4) / 2;
+                double speed = sqrt(ball->speed.x() * ball->speed.x() + ball->speed.y() * ball->speed.y());
+                double degree = atan2(ball->speed.y(), ball->speed.x());
+                if (speed > 8) {
+                    ball->speed.rx() -= (ball->speed.x() - 8 * cos(degree)) / 4;
+                    ball->speed.ry() -= (ball->speed.y() - 8 * sin(degree)) / 4;
+                } else if (speed <= 2) {
+                    ball->speed.rx() += (2 * cos(degree) - ball->speed.x()) / 2;
+                    ball->speed.ry() += (2 * sin(degree) - ball->speed.y()) / 2;
                 }
                 it++;
             }
         }
         if (bricks.empty()) {
+            QMessageBox::information(this, "结束", "清空了！总计" + ui->scoreLbl->text());
             lives += 3;
             ui->ballLbl->setText(QString("备用球：%1个").arg(lives));
             init();
-            playing = false;
-            ui->rightBtn->setEnabled(false);
-            ui->leftBtn->setEnabled(false);
+            playing = 0;
+            ui->backBtn->setEnabled(0);
+            ui->rightBtn->setEnabled(0);
+            ui->leftBtn->setEnabled(0);
             ui->startBtn->setText("继续");
+        }
+        if (flag[0]) {
+            addSound("Breakout/hit.wav");
+        }
+        if (flag[1]) {
+            addSound("Breakout/paddle.wav");
+        }
+        if (flag[2]) {
+            addSound("Breakout/brick.wav");
         }
     }
     update();

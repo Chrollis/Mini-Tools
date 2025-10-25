@@ -107,7 +107,7 @@ void ArithmeticWidget::onStartBtnClicked()
         bool flag = true;
         for (int i = 0; i < 4; i++) {
             if (operators[i].check->isChecked()) {
-                flag = false;
+                flag = 0;
                 break;
             }
         }
@@ -123,10 +123,10 @@ void ArithmeticWidget::onStartBtnClicked()
         ui->startBtn->setText("停止");
         ui->answerLineA->setFocus();
         createQuestion();
-        ui->negativeCheck->setEnabled(false);
+        ui->negativeCheck->setEnabled(0);
         for (int i = 0; i < 4; i++) {
-            operators[i].check->setEnabled(false);
-            operators[i].box->setEnabled(false);
+            operators[i].check->setEnabled(0);
+            operators[i].box->setEnabled(0);
         }
         started = true;
     } else {
@@ -143,7 +143,7 @@ void ArithmeticWidget::onStartBtnClicked()
             operators[i].check->setEnabled(true);
             operators[i].box->setEnabled(true);
         }
-        started = false;
+        started = 0;
     }
 }
 
@@ -175,15 +175,15 @@ bool ArithmeticWidget::isOperandsLegal(int a, int b)
     case Add:
     case Mul:
         if (a == 0 && b == 0) {
-            return false;
+            return 0;
         }
     case Sub:
         if (a <= b && !ui->negativeCheck->isChecked()) {
-            return false;
+            return 0;
         }
     case Div:
         if (b == 1 || b == 0 || a <= b) {
-            return false;
+            return 0;
         }
     }
     return true;

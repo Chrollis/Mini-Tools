@@ -44,7 +44,7 @@ bool TictactoeWidget::check(Piece whom)
     if (hasWho[2] + hasWho[4] + hasWho[6] == 3) {
         return true;
     }
-    return false;
+    return 0;
 }
 
 void TictactoeWidget::play()
@@ -56,7 +56,7 @@ void TictactoeWidget::play()
         } else {
             for (int i = 0; i < 9; i++) {
                 if (cells[i] == Nothing) {
-                    flag = false;
+                    flag = 0;
                     break;
                 }
             }
@@ -70,7 +70,7 @@ void TictactoeWidget::play()
         } else {
             for (int i = 0; i < 9; i++) {
                 if (cells[i] == Nothing) {
-                    flag = false;
+                    flag = 0;
                     break;
                 }
             }

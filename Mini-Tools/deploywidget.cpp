@@ -101,7 +101,7 @@ void DeployWidget::onProcessOutput()
 
 void DeployWidget::onProcessFinished(int exitCode, QProcess::ExitStatus exitStatus)
 {
-    updateUI(false);
+    updateUI(0);
     if (exitStatus == QProcess::NormalExit && exitCode == 0) {
         logMessage("部署成功完成!");
         QMessageBox::information(this, "完成", "DLL文件部署成功!");
@@ -152,10 +152,10 @@ void DeployWidget::loadSettings()
         ui->deployButton->setText("开始部署");
     }
     ui->compilerRuntimeCheck->setChecked(settings.value("deploy/compilerRuntime", true).toBool());
-    ui->noTranslationsCheck->setChecked(settings.value("deploy/noTranslations", false).toBool());
-    ui->noSystemD3DCheck->setChecked(settings.value("deploy/noSystemD3D", false).toBool());
-    ui->noOpenglSwCheck->setChecked(settings.value("deploy/noOpenglSw", false).toBool());
-    ui->verboseCheck->setChecked(settings.value("deploy/verbose", false).toBool());
+    ui->noTranslationsCheck->setChecked(settings.value("deploy/noTranslations", 0).toBool());
+    ui->noSystemD3DCheck->setChecked(settings.value("deploy/noSystemD3D", 0).toBool());
+    ui->noOpenglSwCheck->setChecked(settings.value("deploy/noOpenglSw", 0).toBool());
+    ui->verboseCheck->setChecked(settings.value("deploy/verbose", 0).toBool());
 }
 
 void DeployWidget::logMessage(const QString& message)

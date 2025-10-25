@@ -58,10 +58,17 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="0" colspan="2">
+   <item row="1" column="0">
     <widget class="QLabel" name="scoreLbl">
      <property name="text">
       <string>得分：0分</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <widget class="QPushButton" name="backBtn">
+     <property name="text">
+      <string>手动备用球</string>
      </property>
     </widget>
    </item>

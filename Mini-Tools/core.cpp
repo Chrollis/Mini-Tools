@@ -28,6 +28,7 @@ Core::Core(QWidget* parent)
     ui->setupUi(this);
     setWindowTitle("小工具些");
     startTimer(3000);
+    addSound("");
 
     connect(ui->actionDeploy, &QAction::triggered, this, [&]() { onActionTriggered(DeployWidget, actionDeploy, "Qt-dlls部署"); });
     connect(ui->actionChat, &QAction::triggered, this, [&]() { onActionTriggered(ChatFormatWidget, actionChat, "AI对话整理"); });
@@ -55,7 +56,7 @@ void Core::widgetClose(QWidget* widget)
     }
     delete widget;
     if (ui->tabWidget->count() == 0) {
-        ui->actionDock->setEnabled(false);
+        ui->actionDock->setEnabled(0);
     }
 }
 
@@ -72,7 +73,7 @@ void Core::onActionDockTriggered()
         ui->tabWidget->removeTab(index);
         docks.insert(widget, dock);
         if (ui->tabWidget->count() == 0) {
-            ui->actionDock->setEnabled(false);
+            ui->actionDock->setEnabled(0);
         }
     }
 }
