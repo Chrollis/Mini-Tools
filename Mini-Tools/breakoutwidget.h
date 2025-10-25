@@ -28,6 +28,13 @@ private:
         int score;
         bool alive;
     };
+    struct Fruit {
+        QPointF pos;
+        enum Type {
+            Clone,
+            Split,
+        } type;
+    };
 
 public:
     explicit BreakoutWidget(QWidget* parent = nullptr);
@@ -38,6 +45,7 @@ private:
     Paddle paddle;
     QList<Ball*> balls;
     QList<Brick*> bricks;
+    QList<Fruit*> fruits;
     int score = 0;
     int lives = 3;
     bool playing = false;

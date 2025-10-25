@@ -99,6 +99,18 @@ void BreakoutWidget::paintEvent(QPaintEvent*)
             painter.drawRect(brick->pos.x() * 8, brick->pos.y() * 8, 8, 8);
         }
     }
+    painter.setPen(Qt::SolidLine);
+    for (const Fruit* const fruit : std::as_const(fruits)) {
+        switch (fruit->type) {
+        case Fruit::Clone:
+            painter.setBrush(Qt::cyan);
+            break;
+        case Fruit::Split:
+            painter.setBrush(Qt::yellow);
+            break;
+        }
+        painter.drawEllipse(fruit->pos, 2, 2);
+    }
     ui->ground->setPixmap(pic);
 }
 
@@ -123,6 +135,48 @@ void BreakoutWidget::timerEvent(QTimerEvent*)
             if (nx >= 50.1 && nx <= 349.9) {
                 paddle.pos.moveCenter(QPointF(nx, paddle.pos.center().y()));
                 paddle.tar = paddle.pos.center().x();
+            }
+        }
+        for (auto it = fruits.begin(); it != fruits.end();) {
+            Fruit* fruit = *it;
+            QRectF fruitRect(fruit->pos.x() - 2, fruit->pos.y() - 2, 4, 4);
+            if (fruitRect.intersects(paddle.pos)) {
+                Ball* ball;
+                int length = 3;
+                double degree;
+                QList<Ball*> newBalls;
+                switch (fruit->type) {
+                case Fruit::Clone:
+                    for (int i = 0; i < 2; i++) {
+                        ball = new Ball;
+                        ball->pos = QPointF(200, 350);
+                        degree = rand() % 360 * 2 * 3.1416 / 360;
+                        ball->speed = QPointF(length * cos(degree), length * sin(degree));
+                        balls.prepend(ball);
+                    }
+                    break;
+                case Fruit::Split:
+                    for (const Ball* const theBall : std::as_const(balls)) {
+                        for (int i = 0; i < 2; i++) {
+                            ball = new Ball;
+                            ball->pos = theBall->pos;
+                            degree = rand() % 360 * 2 * 3.1416 / 360;
+                            length = sqrt(theBall->speed.x() * theBall->speed.x() + theBall->speed.y() * theBall->speed.y());
+                            ball->speed = QPointF(length * cos(degree), length * sin(degree));
+                            newBalls.prepend(ball);
+                        }
+                    }
+                    balls.append(newBalls);
+                    break;
+                }
+                delete fruit;
+                it = fruits.erase(it);
+            } else if (fruit->pos.y() - 2 >= 400) {
+                delete fruit;
+                it = fruits.erase(it);
+            } else {
+                fruit->pos.ry() += 2;
+                it++;
             }
         }
         for (auto it = balls.begin(); it != balls.end();) {
@@ -196,6 +250,12 @@ void BreakoutWidget::timerEvent(QTimerEvent*)
                                 ball->speed.ry() *= -1;
                             } else if (ballRect.top() < brickRect.bottom() && ballRect.bottom() > brickRect.bottom() && ball->speed.y() < 0) {
                                 ball->speed.ry() *= -1;
+                            }
+                            if (rand() % 100 > 90) {
+                                Fruit* fruit = new Fruit;
+                                fruit->pos = brickRect.center();
+                                fruit->type = (Fruit::Type)(rand() % 2);
+                                fruits.append(fruit);
                             }
                         }
                         at++;
