@@ -148,6 +148,9 @@ void BreakoutWidget::timerEvent(QTimerEvent*)
                 switch (fruit->type) {
                 case Fruit::Clone:
                     for (int i = 0; i < 2; i++) {
+                        if (balls.size() >= 128) {
+                            break;
+                        }
                         ball = new Ball;
                         ball->pos = QPointF(200, 350);
                         degree = rand() % 360 * 2 * 3.1416 / 360;
@@ -157,6 +160,9 @@ void BreakoutWidget::timerEvent(QTimerEvent*)
                     break;
                 case Fruit::Split:
                     for (const Ball* const theBall : std::as_const(balls)) {
+                        if (balls.size() + newBalls.size() >= 128) {
+                            break;
+                        }
                         for (int i = 0; i < 2; i++) {
                             ball = new Ball;
                             ball->pos = theBall->pos;
@@ -251,7 +257,7 @@ void BreakoutWidget::timerEvent(QTimerEvent*)
                             } else if (ballRect.top() < brickRect.bottom() && ballRect.bottom() > brickRect.bottom() && ball->speed.y() < 0) {
                                 ball->speed.ry() *= -1;
                             }
-                            if (rand() % 100 > 90) {
+                            if (rand() % 100 > 95) {
                                 Fruit* fruit = new Fruit;
                                 fruit->pos = brickRect.center();
                                 fruit->type = (Fruit::Type)(rand() % 2);
