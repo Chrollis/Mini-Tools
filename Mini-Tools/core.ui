@@ -36,6 +36,7 @@
     <addaction name="actionDeploy"/>
     <addaction name="actionChat"/>
     <addaction name="actionArithmetic"/>
+    <addaction name="actionTranslation"/>
    </widget>
    <widget class="QMenu" name="menu_W">
     <property name="title">
@@ -95,6 +96,11 @@
   <action name="actionBreakout">
    <property name="text">
     <string>打砖块</string>
+   </property>
+  </action>
+  <action name="actionTranslation">
+   <property name="text">
+    <string>翻译Json管理器</string>
    </property>
   </action>
  </widget>

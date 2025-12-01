@@ -6,6 +6,7 @@
 #include "cprlib.h"
 #include "deploywidget.h"
 #include "tictactoewidget.h"
+#include "translationwidget.h"
 #include "ui_core.h"
 
 #define onActionTriggered(widgetClassName, actionName, actionTitle) \
@@ -36,6 +37,7 @@ Core::Core(QWidget* parent)
     connect(ui->actionTictactoe, &QAction::triggered, this, [&]() { onActionTriggered(TictactoeWidget, actionTictactoe, "井字棋"); });
     connect(ui->actionBlackjack, &QAction::triggered, this, [&]() { onActionTriggered(BlackjackWidget, actionBlackjack, "21点"); });
     connect(ui->actionBreakout, &QAction::triggered, this, [&]() { onActionTriggered(BreakoutWidget, actionBreakout, "打砖块"); });
+    connect(ui->actionTranslation, &QAction::triggered, this, [&]() { onActionTriggered(TranslationWidget, actionTranslation, "翻译Json管理器"); });
     connect(ui->actionDock, &QAction::triggered, this, &Core::onActionDockTriggered);
 }
 

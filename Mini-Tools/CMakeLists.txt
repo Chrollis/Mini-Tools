@@ -18,6 +18,7 @@ qt_add_executable(Mini-Tools
     breakoutwidget.h breakoutwidget.cpp breakoutwidget.ui
     cprlib.h
     cprlib.cpp
+    translationwidget.h translationwidget.cpp translationwidget.ui
 )
 
 target_link_libraries(Mini-Tools
