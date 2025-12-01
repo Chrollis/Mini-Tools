@@ -25,6 +25,7 @@ TranslationWidget::TranslationWidget(QWidget* parent)
     connect(ui->btnSelectSource, &QPushButton::clicked, this, &TranslationWidget::onBtnSelectSourceClicked);
     connect(ui->btnSelectTarget, &QPushButton::clicked, this, &TranslationWidget::onBtnSelectTargetClicked);
     connect(ui->btnRemoveTarget, &QPushButton::clicked, this, &TranslationWidget::onBtnRemoveTargetClicked);
+    connect(ui->btnCancelTarget, &QPushButton::clicked, this, [&]() { ui->listWidgetTargets->setCurrentRow(-1);updateTargetColumns();refreshTable(); });
     connect(ui->btnClearTargets, &QPushButton::clicked, this, &TranslationWidget::onBtnClearTargetsClicked);
     connect(ui->btnAddKey, &QPushButton::clicked, this, &TranslationWidget::onBtnAddKeyClicked);
     connect(ui->btnDeleteKey, &QPushButton::clicked, this, &TranslationWidget::onBtnDeleteKeyClicked);
@@ -34,6 +35,9 @@ TranslationWidget::TranslationWidget(QWidget* parent)
     connect(ui->btnNewSource, &QPushButton::clicked, this, &TranslationWidget::onBtnNewSourceClicked);
     connect(ui->btnNewTarget, &QPushButton::clicked, this, &TranslationWidget::onBtnNewTargetClicked);
     connect(ui->tableWidget, &QTableWidget::cellDoubleClicked, this, &TranslationWidget::onTableWidgetCellDoubleClicked);
+    connect(ui->listWidgetTargets, &QListWidget::itemClicked, this, [&]() { updateTargetColumns();refreshTable(); });
+    connect(ui->checkOnlyBlank, &QCheckBox::checkStateChanged, this, &TranslationWidget::refreshTable);
+    connect(ui->checkOnlyTarget, &QCheckBox::checkStateChanged, this, [&]() { updateTargetColumns();refreshTable(); });
 }
 
 TranslationWidget::~TranslationWidget()
@@ -57,7 +61,7 @@ void TranslationWidget::onBtnSelectSourceClicked()
     if (!filePath.isEmpty()) {
         source = myJson(this, filePath);
         source.load(1);
-        ui->lineEditSource->setText(QFileInfo(filePath).fileName());
+        ui->lineEditSource->setText(filePath);
         refreshTable();
     }
 }
@@ -83,7 +87,7 @@ void TranslationWidget::onBtnNewSourceClicked()
     }
     source = myJson(this, filePath);
     source.save(1);
-    ui->lineEditSource->setText(QFileInfo(filePath).fileName());
+    ui->lineEditSource->setText(filePath);
     refreshTable();
 }
 
@@ -103,7 +107,7 @@ void TranslationWidget::onBtnNewTargetClicked()
     myJson target(this, filePath);
     target.save(0, &source);
     targets.append(target);
-    ui->listWidgetTargets->addItem(QFileInfo(filePath).fileName());
+    ui->listWidgetTargets->addItem(filePath);
     updateTargetColumns();
     refreshTable();
 }
@@ -115,7 +119,7 @@ void TranslationWidget::onBtnSelectTargetClicked()
         myJson target(this, filePath);
         target.load(0, &source);
         targets.append(target);
-        ui->listWidgetTargets->addItem(QFileInfo(filePath).fileName());
+        ui->listWidgetTargets->addItem(filePath);
         updateTargetColumns();
         refreshTable();
     }
@@ -151,17 +155,18 @@ void TranslationWidget::onBtnAddKeyClicked()
         QMessageBox::warning(this, "警告", "请先选择或新建源文件");
         return;
     }
-
-    int row = ui->tableWidget->rowCount();
-    ui->tableWidget->insertRow(row);
-
+    int row = ui->tableWidget->currentRow();
     QString newKey = QString("new_key_%1").arg(row);
     int counter = 1;
-    while (source.data.contains(newKey)) {
-        newKey = QString("new_key_%1").arg(row + counter);
-        counter++;
+    if (row < 0) {
+        while (source.data.contains(newKey)) {
+            newKey = QString("new_key_%1").arg(row + counter++);
+        }
+    } else {
+        do {
+            newKey = ui->tableWidget->item(row, 0)->text() + QString(" (%1)").arg(counter++);
+        } while (source.data.contains(newKey));
     }
-
     source.data[newKey] = "";
     for (auto& target : targets) {
         target.data[newKey] = "";
@@ -257,24 +262,82 @@ void TranslationWidget::refreshTable()
     if (source.data.isEmpty()) {
         return;
     }
-
-    int row = 0;
-    for (auto it = source.data.begin(); it != source.data.end(); ++it, ++row) {
-        ui->tableWidget->insertRow(row);
-        QTableWidgetItem* keyItem = new QTableWidgetItem(it.key());
-        ui->tableWidget->setItem(row, 0, keyItem);
-        QTableWidgetItem* sourceItem = new QTableWidgetItem(it.value());
-        if (it.value().isEmpty()) {
-            sourceItem->setBackground(QColor(255, 200, 200));
-        }
-        ui->tableWidget->setItem(row, 1, sourceItem);
-        for (int i = 0; i < targets.size(); i++) {
-            QString translation = targets[i].data.value(it.key(), "");
-            QTableWidgetItem* targetItem = new QTableWidgetItem(translation);
-            if (translation.isEmpty()) {
-                targetItem->setBackground(QColor(255, 255, 200));
+    if (!ui->checkOnlyBlank->isChecked()) {
+        int row = 0;
+        for (auto it = source.data.begin(); it != source.data.end(); ++it, ++row) {
+            ui->tableWidget->insertRow(row);
+            QTableWidgetItem* keyItem = new QTableWidgetItem(it.key());
+            ui->tableWidget->setItem(row, 0, keyItem);
+            QTableWidgetItem* sourceItem = new QTableWidgetItem(it.value());
+            if (it.value().isEmpty()) {
+                sourceItem->setBackground(QColor(255, 200, 200));
             }
-            ui->tableWidget->setItem(row, 2 + i, targetItem);
+            ui->tableWidget->setItem(row, 1, sourceItem);
+            if (!ui->checkOnlyTarget->isChecked()) {
+                for (int i = 0; i < targets.size(); i++) {
+                    QString translation = targets[i].data.value(it.key(), "");
+                    QTableWidgetItem* targetItem = new QTableWidgetItem(translation);
+                    if (translation.isEmpty()) {
+                        targetItem->setBackground(QColor(255, 255, 200));
+                    }
+                    ui->tableWidget->setItem(row, 2 + i, targetItem);
+                }
+            } else {
+                if (ui->listWidgetTargets->currentRow() >= 0) {
+                    QString translation = targets[ui->listWidgetTargets->currentRow()].data.value(it.key(), "");
+                    QTableWidgetItem* targetItem = new QTableWidgetItem(translation);
+                    if (translation.isEmpty()) {
+                        targetItem->setBackground(QColor(255, 255, 200));
+                    }
+                    ui->tableWidget->setItem(row, 2, targetItem);
+                }
+            }
+        }
+    } else {
+        int row = 0;
+        for (auto it = source.data.begin(); it != source.data.end(); ++it) {
+            bool flag = 0;
+            if (it.value().isEmpty()) {
+                flag = 1;
+            } else {
+                for (int i = 0; i < targets.size(); i++) {
+                    if (targets[i].data[it.key()].isEmpty()) {
+                        flag = 1;
+                        break;
+                    }
+                }
+            }
+            if (!flag) {
+                continue;
+            }
+            ui->tableWidget->insertRow(row);
+            QTableWidgetItem* keyItem = new QTableWidgetItem(it.key());
+            ui->tableWidget->setItem(row, 0, keyItem);
+            QTableWidgetItem* sourceItem = new QTableWidgetItem(it.value());
+            if (it.value().isEmpty()) {
+                sourceItem->setBackground(QColor(255, 200, 200));
+            }
+            ui->tableWidget->setItem(row, 1, sourceItem);
+            if (!ui->checkOnlyTarget->isChecked()) {
+                for (int i = 0; i < targets.size(); i++) {
+                    QString translation = targets[i].data.value(it.key(), "");
+                    QTableWidgetItem* targetItem = new QTableWidgetItem(translation);
+                    if (translation.isEmpty()) {
+                        targetItem->setBackground(QColor(255, 255, 200));
+                    }
+                    ui->tableWidget->setItem(row, 2 + i, targetItem);
+                }
+            } else {
+                if (ui->listWidgetTargets->currentRow() >= 0) {
+                    QString translation = targets[ui->listWidgetTargets->currentRow()].data.value(it.key(), "");
+                    QTableWidgetItem* targetItem = new QTableWidgetItem(translation);
+                    if (translation.isEmpty()) {
+                        targetItem->setBackground(QColor(255, 255, 200));
+                    }
+                    ui->tableWidget->setItem(row, 2, targetItem);
+                }
+            }
+            row++;
         }
     }
 }
@@ -282,12 +345,20 @@ void TranslationWidget::refreshTable()
 void TranslationWidget::updateTargetColumns()
 {
 
-    ui->tableWidget->setColumnCount(2 + targets.size());
-
     QStringList headers;
     headers << "Key" << "源翻译";
-    for (const auto& target : std::as_const(targets)) {
-        headers << QFileInfo(target.path).fileName();
+    if (!ui->checkOnlyTarget->isChecked()) {
+        ui->tableWidget->setColumnCount(2 + targets.size());
+        for (const auto& target : std::as_const(targets)) {
+            headers << QFileInfo(target.path).fileName();
+        }
+    } else {
+        if (ui->listWidgetTargets->currentRow() >= 0) {
+            ui->tableWidget->setColumnCount(3);
+            headers << QFileInfo(targets[ui->listWidgetTargets->currentRow()].path).fileName();
+        } else {
+            ui->tableWidget->setColumnCount(2);
+        }
     }
     ui->tableWidget->setHorizontalHeaderLabels(headers);
 }
